@@ -19,5 +19,14 @@
   "bugs": {
     "url": "https://github.com/Rise-Vision/widget-tester/issues"
   },
-  "homepage": "https://github.com/Rise-Vision/widget-tester"
+  "homepage": "https://github.com/Rise-Vision/widget-tester",
+  "devDependencies": {
+    "express": "^4.6.1",
+    "gulp": "^3.8.6",
+    "gulp-html-replace": "^1.1.0",
+    "gulp-protractor": "0.0.11",
+    "gulp-rename": "^1.2.0",
+    "gulp-util": "^2.2.20",
+    "spawn-cmd": "0.0.2"
+  }
 }
