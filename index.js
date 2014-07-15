@@ -11,6 +11,7 @@
   var webdriver_update = require("gulp-protractor").webdriver_update;
   var protractor = require("gulp-protractor").protractor;
   var path = require("path");
+  var glob = require("glob");
 
   var httpServer;
 
@@ -47,9 +48,18 @@
       testE2E: function (options) {
         options = options || {};
         return function (cb) {
-          var tests = ["test/e2e/*test.js"];
+          var tests = options.testFiles || ["./test/e2e/*test.js"];
+          var files = [];
 
-          var casperChild = spawn("casperjs", ["test"].concat(tests));
+          if(typeof tests === "string") {
+            tests = [tests];
+          }
+
+          tests.forEach(function (test) {
+            files = files.concat(glob.sync(test));
+          });
+
+          var casperChild = spawn("casperjs", ["test"].concat(files));
 
           casperChild.stdout.on("data", function (data) {
               gutil.log("CasperJS:", data.toString().slice(0, -1)); // Remove \n
@@ -62,6 +72,7 @@
                 cb("CasperJS returned error.");
               }
               else {
+                gutil.log("CasperJS: run was successful.");
                 cb();
               }
           });

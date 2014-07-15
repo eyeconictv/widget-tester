@@ -22,6 +22,7 @@
   "homepage": "https://github.com/Rise-Vision/widget-tester",
   "dependencies": {
     "express": "^4.6.1",
+    "glob": "^4.0.4",
     "gulp": "^3.8.6",
     "gulp-html-replace": "^1.1.0",
     "gulp-protractor": "0.0.11",
