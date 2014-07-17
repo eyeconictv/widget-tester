@@ -86,7 +86,7 @@
                 configFile: options.configFile || path.join(__dirname, "protractor.conf.js"),
                 args: ["--baseUrl", options.baseUrl || "http://127.0.0.1:8099/src/settings-e2e.html"]
             }))
-            .on("error", function (e) { gutil.error(e); throw e; });
+            .on("error", function (e) { gutil.log(e); throw e; });
         };
       }
     }
