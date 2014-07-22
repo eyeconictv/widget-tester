@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Rise-Vision/widget-tester",
   "dependencies": {
+    "async": "^0.9.0",
     "express": "^4.6.1",
     "glob": "^4.0.4",
     "gulp": "^3.8.6",
@@ -28,6 +29,16 @@
     "gulp-protractor": "0.0.11",
     "gulp-rename": "^1.2.0",
     "gulp-util": "^2.2.20",
-    "spawn-cmd": "0.0.2"
+    "jasmine-node": "^1.14.5",
+    "jasmine-reporters": "^2.0.1",
+    "junit-xml-parser": "0.0.3",
+    "mkdirp": "^0.5.0",
+    "mocha": "^1.20.1",
+    "node-uuid": "^1.4.1",
+    "reporter-file": "0.0.1",
+    "run-sequence": "^0.3.6",
+    "spawn-cmd": "0.0.2",
+    "xml2js": "^0.4.4",
+    "xunit-file": "0.0.5"
   }
 }
