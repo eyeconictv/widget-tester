@@ -13,7 +13,6 @@
   var path = require("path");
   var glob = require("glob");
   var runSequence = require("run-sequence");
-  var mkdirp = require("mkdirp");
   var uuid = require('node-uuid');
   var junitParser = require('junit-xml-parser').parser;
   var fs = require("fs");
@@ -88,9 +87,11 @@
       testE2EAngular: function (options) {
         options = options || {};
         var ensureReportDirectory = function (cb) {
-          mkdirp('./reports', function (err) {
-            cb(err);
-          });
+          if(!fs.existsSync("./reports")) {
+            fs.mkdir('./reports/', function (err) {
+              cb(err);
+            });
+          }
         };
 
         var runAngularTest = function () {
@@ -99,7 +100,14 @@
                 configFile: options.configFile || path.join(__dirname, "protractor.conf.js"),
                 args: ["--baseUrl", options.baseUrl || "http://127.0.0.1:8099/src/settings-e2e.html"]
             }))
-            .on("error", function (e) { gutil.log(e); throw e; });
+            .on("error", function (e) {
+              gutil.log(e);
+              if(fs.statSync("./reports/angular-xunit.xml")) {
+                //output test result to console
+                gutil.log("Test report", fs.readFileSync("./reports/angular-xunit.xml", {encoding: "utf8"}));
+              }
+              throw e;
+            });
         };
 
         var id = uuid.v1();
