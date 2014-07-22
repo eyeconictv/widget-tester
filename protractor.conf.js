@@ -1,11 +1,15 @@
 var seleniumAddress = (process.env.NODE_ENV === 'prod') ? 'http://localhost:4444/wd/hub' : undefined;
+process.env.XUNIT_FILE = 'reports/angular-xunit.xml';
+// process.env.MOCHA_REPORTER_FILE = 'reports/anglar.json';
+// process.env.MOCHA_REPORTER = 'JSON';
 
 exports.config = {
   allScriptsTimeout: 11000,
 
   // specs: [
-  //   'e2e/*.js'
+  //   './test/e2e/angular/*.js'
   // ],
+
 
   // -----------------------------------------------------------------
   // Browser and Capabilities: Chrome
@@ -22,7 +26,16 @@ exports.config = {
   framework: 'mocha',
 
   mochaOpts: {
-    reporter: 'spec',
+    reporter: require('xunit-file'),
     slow: 3000
   }
+
+  // onPrepare: function() {
+  //   // The require statement must be down here, since jasmine-reporters
+  //   // needs jasmine to be in the global and protractor does not guarantee
+  //   // this until inside the onPrepare function.
+  //   require("jasmine-reporters");
+  //   jasmine.getEnv().addReporter(
+  //     new jasmine.JUnitXmlReporter('xmloutput', true, true));
+  // }
 };
