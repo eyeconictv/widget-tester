@@ -13,7 +13,6 @@
   var path = require("path");
   var glob = require("glob");
   var runSequence = require("run-sequence");
-  var mkdirp = require("mkdirp");
   var uuid = require('node-uuid');
   var junitParser = require('junit-xml-parser').parser;
   var fs = require("fs");
@@ -88,9 +87,11 @@
       testE2EAngular: function (options) {
         options = options || {};
         var ensureReportDirectory = function (cb) {
-          mkdirp('./reports', function (err) {
-            cb(err);
-          });
+          if(!fs.existsSync("./reports")) {
+            fs.mkdir('./reports/', function (err) {
+              cb(err);
+            });
+          }
         };
 
         var runAngularTest = function () {
