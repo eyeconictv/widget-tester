@@ -84,15 +84,21 @@
           });
         };
       },
-      testE2EAngular: function (options) {
+      ensureReportDirectory: function (options) {
         options = options || {};
-        var ensureReportDirectory = function (cb) {
+        return function (cb) {
           if(!fs.existsSync("./reports")) {
             fs.mkdir('./reports/', function (err) {
               cb(err);
             });
           }
+          else {
+            cb();  
+          }
         };
+      },
+      testE2EAngular: function (options) {
+        options = options || {};
 
         var runAngularTest = function () {
           return gulp.src(options.src || ["./test/e2e/*scenarios.js"])
@@ -111,7 +117,7 @@
         };
 
         var id = uuid.v1();
-        gulp.task(id + ":ensureReportDirectory", ensureReportDirectory);
+        gulp.task(id + ":ensureReportDirectory", factory.gulpTaskFactory.ensureReportDirectory());
         gulp.task(id + ":runAngularTest", runAngularTest);
 
         return function (cb) {
