@@ -99,7 +99,14 @@
                 configFile: options.configFile || path.join(__dirname, "protractor.conf.js"),
                 args: ["--baseUrl", options.baseUrl || "http://127.0.0.1:8099/src/settings-e2e.html"]
             }))
-            .on("error", function (e) { gutil.log(e); throw e; });
+            .on("error", function (e) {
+              gutil.log(e);
+              if(fs.statSync("./reports/angular-xunit.xml")) {
+                //output test result to console
+                gutil.log("Test report", fs.readFileSync("./reports/angular-xunit.xml", {encoding: "utf8"}));
+              }
+              throw e;
+            });
         };
 
         var id = uuid.v1();
