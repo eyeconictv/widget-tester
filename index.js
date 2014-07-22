@@ -147,7 +147,7 @@
                 function (err, result){
                   if(result) {
                     gutil.log('Aggregated metrics result:', result);
-                    fs.writeFileSync("reports/metrics.json", JSON.stringify(result, null, 2)); }
+                    fs.writeFileSync("reports/metrics.json", JSON.stringify(result)); }
                   cb(err, result);
                 });
               }
