@@ -18,6 +18,7 @@
   var fs = require("fs");
   var xml2js = require('xml2js');
   var async = require("async");
+  var karma = require("gulp-karma");
 
   var httpServer;
 
@@ -93,7 +94,30 @@
             });
           }
           else {
-            cb();  
+            cb();
+          }
+        };
+      },
+      testUnitAngular: function (options) {
+        options = options || {};
+        return function(cb) {
+          // Be sure to return the stream
+          if(!options.testFiles) {
+            cb("Test files is missing.");
+          }
+          else {
+            return gulp.src(options.testFiles).pipe(
+              karma({
+                  configFile: options.configFile || path.join(__dirname, "karma.conf.js"),
+                  action: options.watch ? "watch" : "run",
+                  basePath : options.configFile || "./",
+                })
+              ).on("error", function(err) {
+                // Make sure failed tests cause gulp to exit non-zero
+                gutil.log("Error: ", err);
+                cb(err);
+                // throw err;
+              });
           }
         };
       },
