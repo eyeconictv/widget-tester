@@ -200,6 +200,8 @@
                   if(result) {
                     gutil.log("Aggregated metrics result:", result);
                     fs.writeFileSync("reports/metrics.json", JSON.stringify(result)); }
+                    fs.writeFileSync("reports/metrics.json.properties",
+                      require("properties").stringify({"CI_METRICS": JSON.stringify(result)}));
                   cb(err, result);
                 });
               }
