@@ -11,7 +11,6 @@
   var webdriver_update = require("gulp-protractor").webdriver_update;
   var protractor = require("gulp-protractor").protractor;
   var path = require("path");
-  var glob = require("glob");
   var runSequence = require("run-sequence");
   var uuid = require("node-uuid");
   var fs = require("fs");
@@ -54,35 +53,44 @@
       },
       testE2E: function (options) {
         options = options || {};
+
+        var runCasperTests = function (cb) {
+          var glob = require("glob");
+
+          // options is optional
+          glob(options.testFiles || "test/e2e/*.js", {}, function (er, files) {
+
+            var casperChild = spawn(
+              path.join(__dirname, "node_modules", "casperjs", "bin", "casperjs"),
+              ["--xunit=" +
+                path.resolve("reports", "casper-xunit.xml")].concat(["test"]).concat(files));
+
+            casperChild.stdout.on("data", function (data) {
+                gutil.log("CasperJS:", data.toString().slice(0, -1)); // Remove \n
+            });
+
+            casperChild.on("close", function (code) {
+                var success = code === 0; // Will be 1 in the event of failure
+                if(!success) {
+                  cb("Error has occurred.");
+                }
+                else {
+                  cb();
+                }
+                // Do something with success here
+            });
+          });
+        };
+
+        var id = uuid.v1();
+        gulp.task(id + ":ensureReportDirectory", factory.gulpTaskFactory.ensureReportDirectory());
+        gulp.task(id + ":runCasperTests", runCasperTests);
+
         return function (cb) {
-          var tests = options.testFiles || ["./test/e2e/*test.js"];
-          var files = [];
-
-          if(typeof tests === "string") {
-            tests = [tests];
-          }
-
-          tests.forEach(function (test) {
-            files = files.concat(glob.sync(test));
-          });
-
-          var casperChild = spawn("casperjs", ["test"].concat(files));
-
-          casperChild.stdout.on("data", function (data) {
-              gutil.log("CasperJS:", data.toString().slice(0, -1)); // Remove \n
-          });
-
-          casperChild.on("close", function (code) {
-              var success = code === 0; // Will be 1 in the event of failure
-              // Do something with success here
-              if(!success) {
-                cb("CasperJS returned error.");
-              }
-              else {
-                gutil.log("CasperJS: run was successful.");
-                cb();
-              }
-          });
+          runSequence(
+            id + ":ensureReportDirectory",
+            id + ":runCasperTests", cb
+          );
         };
       },
       ensureReportDirectory: function (options) {
@@ -124,7 +132,7 @@
       testE2EAngular: function (options) {
         options = options || {};
 
-        var runAngularTest = function () {
+        var runAngularTest = function (cb) {
           return gulp.src(options.src || ["./test/e2e/*scenarios.js"])
             .pipe(protractor({
                 configFile: options.configFile || path.join(__dirname, "protractor.conf.js"),
@@ -136,8 +144,9 @@
                 //output test result to console
                 gutil.log("Test report", fs.readFileSync("./reports/angular-xunit.xml", {encoding: "utf8"}));
               }
-              throw e;
-            });
+              cb(e);
+            })
+            .on("end", cb);
         };
 
         var id = uuid.v1();
@@ -157,7 +166,7 @@
           var glob = require("glob");
 
           // options is optional
-          glob("reports/*xunit.xml", options, function (er, files) {
+          glob("reports/*xunit.xml", {}, function (er, files) {
             async.map(files, function (file, mapCallback) {
               var parser = new xml2js.Parser();
               gutil.log("Processing file", file, "...");
@@ -200,6 +209,7 @@
                   if(result) {
                     gutil.log("Aggregated metrics result:", result);
                     fs.writeFileSync("reports/metrics.json", JSON.stringify(result)); }
+                    //save as Java .properties file to be picked up by Jenkins EnvInject Plugin
                     fs.writeFileSync("reports/metrics.json.properties",
                       require("properties").stringify({"CI_METRICS": JSON.stringify(result)}));
                   cb(err, result);
