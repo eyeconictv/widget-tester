@@ -13,11 +13,12 @@
   var path = require("path");
   var glob = require("glob");
   var runSequence = require("run-sequence");
-  var uuid = require('node-uuid');
-  var junitParser = require('junit-xml-parser').parser;
+  var uuid = require("node-uuid");
   var fs = require("fs");
-  var xml2js = require('xml2js');
+  var xml2js = require("xml2js");
   var async = require("async");
+  var karma = require("gulp-karma");
+  var _ = require("lodash");
 
   var httpServer;
 
@@ -88,12 +89,35 @@
         options = options || {};
         return function (cb) {
           if(!fs.existsSync("./reports")) {
-            fs.mkdir('./reports/', function (err) {
+            fs.mkdir("./reports/", function (err) {
               cb(err);
             });
           }
           else {
-            cb();  
+            cb();
+          }
+        };
+      },
+      testUnitAngular: function (options) {
+        options = options || {};
+        return function(cb) {
+          // Be sure to return the stream
+          if(!options.testFiles) {
+            cb("Test files is missing.");
+          }
+          else {
+            return gulp.src(options.testFiles).pipe(
+              karma({
+                  configFile: options.configFile || path.join(__dirname, "karma.conf.js"),
+                  action: options.watch ? "watch" : "run",
+                  basePath : options.configFile || "./",
+                })
+              ).on("error", function(err) {
+                // Make sure failed tests cause gulp to exit non-zero
+                gutil.log("Error: ", err);
+                cb(err);
+                // throw err;
+              });
           }
         };
       },
@@ -124,12 +148,12 @@
           runSequence(
             id + ":ensureReportDirectory",
             id + ":runAngularTest", cb
-          )
+          );
         };
       },
       metrics: function (options) {
         options = options || {};
-        return function(cb) {
+        var generateMetrics = function(cb) {
           var glob = require("glob");
 
           // options is optional
@@ -137,16 +161,30 @@
             async.map(files, function (file, mapCallback) {
               var parser = new xml2js.Parser();
               gutil.log("Processing file", file, "...");
-              var result = parser.parseString(fs.readFileSync(file), function (err, result) {
-                mapCallback(err, {
-                  tests: result['testsuite']['$']['tests'],
-                  failures: result['testsuite']['$']['failures'],
-                  errors: result['testsuite']['$']['errors'],
-                  skipped: result['testsuite']['$']['skipped']
-                });
+              parser.parseString(fs.readFileSync(file), function (err, result) {
+
+                var results = [];
+
+                var processTestSuite = function(testSuite) {
+                  results.push({
+                    tests: testSuite.$.tests,
+                    failures: testSuite.$.failures,
+                    errors: testSuite.$.errors,
+                    skipped: testSuite.$.skipped
+                  });
+                };
+
+                if(result.testsuites && result.testsuites.testsuite) {
+                  result.testsuites.testsuite.forEach(processTestSuite);
+                }
+                else if (result.testsuite){
+                  processTestSuite(result.testsuite);
+                }
+                mapCallback(err, results);
               });
             },
             function (err, results) {
+              results = _.flatten(results);
               if(err) {cb(err); }
               else {
                 async.reduce(results, {tests: 0, failures: 0, errors: 0, skipped: 0}, function (memo, item, callback){
@@ -160,13 +198,23 @@
                 },
                 function (err, result){
                   if(result) {
-                    gutil.log('Aggregated metrics result:', result);
+                    gutil.log("Aggregated metrics result:", result);
                     fs.writeFileSync("reports/metrics.json", JSON.stringify(result)); }
                   cb(err, result);
                 });
               }
             });
           });
+        };
+        var id = uuid.v1();
+        gulp.task(id + ":ensureReportDirectory", factory.gulpTaskFactory.ensureReportDirectory());
+        gulp.task(id + ":generateMetrics", generateMetrics);
+
+        return function (cb) {
+          runSequence(
+            id + ":ensureReportDirectory",
+            id + ":generateMetrics", cb
+          );
         };
       }
     }
