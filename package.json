@@ -45,6 +45,7 @@
     "lodash": "^2.4.1",
     "mocha": "^1.20.1",
     "node-uuid": "^1.4.1",
+    "properties": "^1.2.1",
     "reporter-file": "0.0.1",
     "run-sequence": "^0.3.6",
     "spawn-cmd": "0.0.2",
