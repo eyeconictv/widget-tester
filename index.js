@@ -61,7 +61,7 @@
           glob(options.testFiles || "test/e2e/*.js", {}, function (er, files) {
 
             var casperChild = spawn(
-              path.join(__dirname, "node_modules", "casperjs", "bin", "casperjs"),
+              "casperjs",
               ["--xunit=" +
                 path.resolve("reports", "casper-xunit.xml")].concat(["test"]).concat(files));
 
