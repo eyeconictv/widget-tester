@@ -133,6 +133,7 @@
         options = options || {};
 
         var runAngularTest = function (cb) {
+
           return gulp.src(options.src || ["./test/e2e/*scenarios.js"])
             .pipe(protractor({
                 configFile: options.configFile || path.join(__dirname, "protractor.conf.js"),
@@ -145,8 +146,7 @@
                 gutil.log("Test report", fs.readFileSync("./reports/angular-xunit.xml", {encoding: "utf8"}));
               }
               cb(e);
-            })
-            .on("end", cb);
+            });
         };
 
         var id = uuid.v1();
