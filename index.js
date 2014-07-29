@@ -134,7 +134,7 @@
 
         var runAngularTest = function (cb) {
 
-          return gulp.src(options.src || ["./test/e2e/*scenarios.js"])
+          return gulp.src(options.src || options.testFiles || ["./test/e2e/**/*scenarios.js"])
             .pipe(protractor({
                 configFile: options.configFile || path.join(__dirname, "protractor.conf.js"),
                 args: ["--baseUrl", options.baseUrl || "http://127.0.0.1:8099/src/settings-e2e.html"]
