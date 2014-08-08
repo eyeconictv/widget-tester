@@ -55,4 +55,5 @@ You will need to make sure the following requirements are fulfilled:
    2. Under "Git Publisher" block, click "Add Note"
    3. Under the new note sub-block
      - Set "note to push" to ```$CI_METRICS```
-     - Set "target remote name" to "origin" (or the one that matches your source code configuration. )
+     - Set "target remote name" to "origin" (or the one that matches your source code configuration. Click "Advance" button in your repository settings to see the name of your git remote)
+     - Set "note's namespace" to ```metrics-${GIT_BRANCH}-${BUILD_NUMBER}```
