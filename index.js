@@ -145,7 +145,7 @@
                 //output test result to console
                 gutil.log("Test report", fs.readFileSync("./reports/angular-xunit.xml", {encoding: "utf8"}));
               }
-              cb(e);
+              throw e;
             });
         };
 
