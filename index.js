@@ -73,6 +73,7 @@
                 var success = code === 0; // Will be 1 in the event of failure
                 if(!success) {
                   cb("Error has occurred.");
+                  throw code;
                 }
                 else {
                   cb();
