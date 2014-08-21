@@ -16,7 +16,6 @@ module.exports = function(config){
     reporters: ["progress", "junit", "coverage"],
 
     plugins : [
-            "karma-jasmine",
             "karma-mocha",
             "karma-chai",
             "karma-junit-reporter",
