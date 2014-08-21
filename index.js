@@ -31,7 +31,7 @@
         return function () {
           var server = express();
           server.use(express.static(options.rootPath || "./"));
-          httpServer = server.listen(8099);
+          httpServer = server.listen(options.port || 8099);
           return httpServer;
         };
       },
