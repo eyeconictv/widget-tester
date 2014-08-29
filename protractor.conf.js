@@ -18,7 +18,7 @@ exports.config = {
   // seleniumServerJar: "../node_modules/protractor/selenium/selenium-server-standalone-2.9.248307.jar",
   seleniumAddress: seleniumAddress,
   capabilities: {
-    browserName: 'phantomjs',
+    browserName: 'chrome',
     version: '',
     platform: 'ANY'
   },
