@@ -133,12 +133,19 @@
       testE2EAngular: function (options) {
         options = options || {};
 
-        var runAngularTest = function (cb) {
+        var runAngularTest = function () {
 
-          return gulp.src(options.src || options.testFiles || ["./test/e2e/**/*scenarios.js"])
+          var args = ["--baseUrl", options.baseUrl || "http://127.0.0.1:8099/src/settings-e2e.html"];
+
+          var argv = require("yargs").argv;
+          if(!options.specs && argv.specs) {
+            options.specs = argv.specs;
+          }
+
+          return gulp.src(options.src || options.testFiles || options.specs || ["./test/e2e/**/*scenarios.js"])
             .pipe(protractor({
                 configFile: options.configFile || path.join(__dirname, "protractor.conf.js"),
-                args: ["--baseUrl", options.baseUrl || "http://127.0.0.1:8099/src/settings-e2e.html"]
+                args: args
             }))
             .on("error", function (e) {
               gutil.log(e);
