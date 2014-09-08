@@ -18,6 +18,7 @@
   var async = require("async");
   var karma = require("gulp-karma");
   var _ = require("lodash");
+  var e2ePort = process.env.E2E_PORT || 8099;
 
   var httpServer;
 
@@ -31,7 +32,7 @@
         return function () {
           var server = express();
           server.use(express.static(options.rootPath || "./"));
-          httpServer = server.listen(options.port || 8099);
+          httpServer = server.listen(options.port || e2ePort);
           return httpServer;
         };
       },
@@ -133,9 +134,9 @@
       testE2EAngular: function (options) {
         options = options || {};
 
-        var runAngularTest = function () {
+        var runAngularTest = function (cb) {
 
-          var args = ["--baseUrl", options.baseUrl || "http://127.0.0.1:8099/src/settings-e2e.html"];
+          var args = ["--baseUrl", options.baseUrl || "http://127.0.0.1:" + e2ePort + "/src/settings-e2e.html"];
 
           var argv = require("yargs").argv;
           if(!options.specs && argv.specs) {
@@ -153,7 +154,13 @@
                 //output test result to console
                 gutil.log("Test report", fs.readFileSync("./reports/angular-xunit.xml", {encoding: "utf8"}));
               }
-              throw e;
+              if(options.throw || options.throw ===undefined) {
+                throw e;
+              }
+              else {
+                cb();
+              }
+
             });
         };
 
