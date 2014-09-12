@@ -43,9 +43,13 @@
       },
       htmlE2E: function (options) {
         options = options || {};
+        if (!options.hasOwnProperty("e2egadgets")) {
+          options.e2egadgets = "../node_modules/widget-tester/gadget-mocks.js";
+        }
+
         return function () {
           return gulp.src("./src/settings.html")
-            .pipe(htmlreplace({e2egadgets: "../node_modules/widget-tester/gadget-mocks.js" }))
+            .pipe(htmlreplace(options))
             .pipe(rename(function (path) {
               path.basename += "-e2e";
             }))
