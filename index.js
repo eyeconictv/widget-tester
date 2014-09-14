@@ -1,4 +1,6 @@
 /* global __dirname: false */
+/* global process: false */
+
 (function (module) {
   "use strict";
 
@@ -18,8 +20,11 @@
   var async = require("async");
   var karma = require("gulp-karma");
   var _ = require("lodash");
+  var https = require("https");
+  var http = require("http");
+  var key = fs.readFileSync(path.join(__dirname, "keys", "https-key.pem"));
+  var cert = fs.readFileSync(path.join(__dirname, "keys", "https-cert.pem"));
   var e2ePort = process.env.E2E_PORT || 8099;
-
   var httpServer;
 
   var factory = {
@@ -32,7 +37,15 @@
         return function () {
           var server = express();
           server.use(express.static(options.rootPath || "./"));
-          httpServer = server.listen(options.port || e2ePort);
+          var credentials = {key: key, cert: cert};
+          var hServer;
+          if(options.https) {
+            hServer = https.createServer(credentials, server);
+          }
+          else {
+            hServer = http.createServer(server);
+          }
+          httpServer = hServer.listen(options.port || e2ePort);
           return httpServer;
         };
       },
