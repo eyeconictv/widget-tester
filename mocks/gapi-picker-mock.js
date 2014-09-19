@@ -1,4 +1,4 @@
-(function (window, handleClientJSLoad){
+(function (window){
   "use strict";
 
   /* global handleClientJSLoad:false */
@@ -314,6 +314,11 @@
     window._pickerCallbackFn.call(null, req);
   };
 
-  handleClientJSLoad();
+  if (typeof window.isClientJS === "undefined") {
+    window.isClientJS = true;
+  }
+  else {
+    window.handleClientJSLoad();
+  }
 
-})(window, handleClientJSLoad);
+})(window);
