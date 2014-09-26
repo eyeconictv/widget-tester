@@ -59,9 +59,12 @@
         if (!options.hasOwnProperty("e2egadgets")) {
           options.e2egadgets = "../node_modules/widget-tester/gadget-mocks.js";
         }
+        if (!options.hasOwnProperty("files")) {
+          options.files = "./src/settings.html";
+        }
 
         return function () {
-          return gulp.src("./src/settings.html")
+          return gulp.src(options.files)
             .pipe(htmlreplace(options))
             .pipe(rename(function (path) {
               path.basename += "-e2e";
