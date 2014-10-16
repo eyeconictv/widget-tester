@@ -57,7 +57,7 @@
       htmlE2E: function (options) {
         options = options || {};
         if (!options.hasOwnProperty("e2egadgets")) {
-          options.e2egadgets = "../node_modules/widget-tester/gadget-mocks.js";
+          options.e2egadgets = "../node_modules/widget-tester/mocks/gadget-mocks.js";
         }
         if (!options.hasOwnProperty("files")) {
           options.files = "./src/settings.html";
