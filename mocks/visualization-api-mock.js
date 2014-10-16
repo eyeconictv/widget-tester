@@ -4,6 +4,14 @@
   if (typeof window.google === "undefined") {
     window.google = {};
   }
+  
+  window.google = {
+    load: function(type, retries, params) {
+      if (params && params.callback) {
+        params.callback();
+      }
+    }
+  };
 
   window.google.visualization = {
     Query: function (url, options) {
@@ -36,7 +44,12 @@
                       "Date(2005, 10, 29)"
                     ]
                   ];
-
+                
+                if (window.gadget && window.gadget.data) {
+                  cols = window.gadget.data.cols || cols;
+                  rows = window.gadget.data.rows || rows;
+                }
+                                
                 var dataTableInstance = {
                   getColumnId: function (columnIndex) {
                     return cols[columnIndex].id;
@@ -54,6 +67,9 @@
                     return rows.length;
                   },
                   getValue: function (rowIndex, columnIndex) {
+                    return rows[rowIndex][columnIndex];
+                  },
+                  getFormattedValue: function(rowIndex, columnIndex) {
                     return rows[rowIndex][columnIndex];
                   }
                 };
