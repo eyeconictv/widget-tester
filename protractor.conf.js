@@ -1,5 +1,6 @@
 var seleniumAddress = (process.env.NODE_ENV === 'prod') ? 'http://localhost:4444/wd/hub' : undefined;
 process.env.XUNIT_FILE = 'reports/angular-xunit.xml';
+process.env.CHROME_INSTANCES = process.env.CHROME_INSTANCES || 1;
 // process.env.MOCHA_REPORTER_FILE = 'reports/anglar.json';
 // process.env.MOCHA_REPORTER = 'JSON';
 
@@ -20,7 +21,9 @@ exports.config = {
   capabilities: {
     browserName: 'chrome',
     version: '',
-    platform: 'ANY'
+    platform: 'ANY',
+    shardTestFiles: true,
+    maxInstances: process.env.CHROME_INSTANCES
   },
 
   framework: 'mocha',
