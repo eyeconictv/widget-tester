@@ -71,6 +71,9 @@
                   },
                   getFormattedValue: function(rowIndex, columnIndex) {
                     return rows[rowIndex][columnIndex];
+                  },
+                  getProperty: function(rowIndex, columnIndex, name) {
+                    return null;
                   }
                 };
 
