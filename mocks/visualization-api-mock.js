@@ -74,6 +74,9 @@
                   },
                   getProperty: function(rowIndex, columnIndex, name) {
                     return null;
+                  },
+                  removeColumn: function(columnIndex) {
+                    cols.splice(columnIndex,1);
                   }
                 };
 
