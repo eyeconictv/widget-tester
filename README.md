@@ -19,7 +19,7 @@ At this time Chrome is the only browser that this project and Rise Vision suppor
 ## Built With
 - NPM (node package manager)
 - Bower
-- Karma and Mocha for testing
+- Karma, Mocha, Chai, Chai-As-Promised & Sinon-Chai for testing
 
 ## Development
 
