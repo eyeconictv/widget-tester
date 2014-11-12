@@ -5,7 +5,7 @@ module.exports = function(config){
 
     autoWatch : false,
 
-    frameworks: ["mocha", "chai", "chai-as-promised"],
+    frameworks: ["mocha", "chai", "chai-as-promised", "sinon-chai"],
 
     browsers : ["PhantomJS"],
 
@@ -18,6 +18,7 @@ module.exports = function(config){
     plugins : [
             "karma-mocha",
             "karma-chai",
+            "sinon-chai",
             "karma-junit-reporter",
             "karma-coverage",
             "karma-chai-plugins",
