@@ -1,4 +1,7 @@
 var seleniumAddress = (process.env.NODE_ENV === 'prod') ? 'http://localhost:4444/wd/hub' : undefined;
+if(process.env.SELENIUM_ADDRESS) {
+  seleniumAddress = process.env.SELENIUM_ADDRESS;
+}
 process.env.XUNIT_FILE = 'reports/angular-xunit.xml';
 process.env.CHROME_INSTANCES = process.env.CHROME_INSTANCES || 1;
 // process.env.MOCHA_REPORTER_FILE = 'reports/anglar.json';
