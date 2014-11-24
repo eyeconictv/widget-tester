@@ -25,6 +25,7 @@
     "casperjs": "^1.1.0-beta3",
     "chai": "^1.9.1",
     "chai-as-promised": "^4.1.1",
+    "dns-sync": "^0.1.1",
     "express": "^4.6.1",
     "glob": "^4.0.4",
     "gulp": "^3.8.6",
