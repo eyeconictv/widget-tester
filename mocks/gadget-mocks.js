@@ -26,20 +26,23 @@
       
       if (callbackMethod && param2) {
         var value;
+
         if (typeof(param2) === 'string') {
           value = param2;
         }
         else if (param2.length) {
           value = [];
+
           for (i = 0; i < param2.length; i++) {
             if (param2[i] === "additionalParams" && window.gadget && window.gadget.settings) {
               value[i] = JSON.stringify(window.gadget.settings.additionalParams);
             }
             else {
-              value[i] = param2[i];
+              value[i] = JSON.stringify(param2[i]);
             }
           } 
         }
+        
         callbackMethod(param2, value);
       }
     }
