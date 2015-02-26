@@ -1,6 +1,6 @@
 
 ;(function(window) {
-  
+
   var rpc = function (methodName, callback, param1, param2) {
     if(methodName === "rscmd_saveSettings") {
       window.result.params = param1.params;
@@ -23,7 +23,7 @@
           break;
         }
       }
-      
+
       if (callbackMethod && param2) {
         var value;
 
@@ -40,13 +40,13 @@
             else {
               value[i] = JSON.stringify(param2[i]);
             }
-          } 
+          }
         }
-        
+
         callbackMethod(param2, value);
       }
     }
-    else if (methodName === "rsevent_ready") {
+    else if ((methodName === "rsevent_ready") || (methodName === "rsevent_done")) {
       for (var i = 0; i < rpc.methods.length; i++) {
         if (rpc.methods[i] === "rscmd_play_" + param1) {
           rpc.callbacks[i]();
@@ -55,7 +55,7 @@
     }
     else {throw "Unknown method"; }
   };
-  
+
   rpc.methods = [];
   rpc.callbacks = [];
 
@@ -82,9 +82,9 @@
       return {
         getString: function (value) {
           switch (value) {
-            case "rsW": 
+            case "rsW":
               return window.innerWidth;
-            case "rsH": 
+            case "rsH":
               return window.innerHeight;
           }
           return value;
@@ -101,5 +101,5 @@
     },
     rpc: rpc
   };
-  
+
 })(window);
