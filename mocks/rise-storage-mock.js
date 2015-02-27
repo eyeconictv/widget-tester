@@ -6,22 +6,22 @@
     images = {
       "items": [
         {
-          "name": "my-folder/home.jpg",
+          "name": "my-folder/moon.jpg",
           "contentType": "image/jpeg",
           "updated": "2015-02-04T17:45:25.945Z",
-          "mediaLink": "https://url.to.home.jpg"
+          "mediaLink": "https://storage.googleapis.com/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/Widgets%2Fmoon.jpg"
         },
         {
-          "name": "my-folder/circle.png",
+          "name": "my-folder/apple_raw.png",
           "contentType": "image/png",
           "updated": "2015-02-06T14:25:11.312Z",
-          "mediaLink": "https://url.to.circle.png"
+          "mediaLink": "https://storage.googleapis.com/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/Widgets%2Fapple.png"
         },
         {
-          "name": "my-folder/my-image.bmp",
+          "name": "my-folder/duck.bmp",
           "contentType": "image/bmp",
           "updated": "2015-02-06T11:24:13.313Z",
-          "mediaLink": "https://url.to.my-image.bmp"
+          "mediaLink": "https://storage.googleapis.com/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/Widgets%2Fduck.bmp"
         }
       ]
     },
