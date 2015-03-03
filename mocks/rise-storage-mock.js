@@ -1,8 +1,9 @@
 (function (window) {
   "use strict";
 
-  var storage = document.querySelector("rise-storage"),
-    singleImage = "https://url.to.home.jpg",
+  var storageItems = document.querySelectorAll("rise-storage"),
+    dispatched = [],
+    singleImage = "https://storage.googleapis.com/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/Widgets%2Fmoon.jpg",
     images = {
       "items": [
         {
@@ -25,30 +26,31 @@
         }
       ]
     },
+    singleVideo = "https://storage.googleapis.com/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/Widgets%2Fa_food_show.webm",
     videos = {
-     "items": [
-       {
-          "name": "my-folder/car-ad.mp4",
+      "items": [
+        {
+          "name": "Widgets/big_buck_bunny.webm",
+          "contentType": "video/webm",
+          "updated": "2015-02-02T10:03:11.263Z",
+          "mediaLink": "https://storage.googleapis.com/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/Widgets%2Fbig_buck_bunny.webm"
+        },
+        {
+          "name": "Widgets/big_buck_bunny.mp4",
           "contentType": "video/mp4",
           "updated": "2015-02-02T10:03:11.263Z",
-          "mediaLink": "https://url.to.car-ad.mp4"
+          "mediaLink": "https://storage.googleapis.com/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/Widgets%2Fbig_buck_bunny.mp4"
         },
         {
-          "name": "my-folder/walking-dead.ogv",
+          "name": "Widgets/big_buck_bunny.ogv",
           "contentType": "video/ogg",
-          "updated": "2015-02-01T09:08:15.263Z",
-          "mediaLink": "https://url.to.walking-dead.ogv"
-        },
-        {
-          "name": "my-folder/south-park.webm",
-          "contentType": "video/webm",
-          "updated": "2015-02-03T19:13:45.263Z",
-          "mediaLink": "https://url.to.south-park.webm"
+          "updated": "2015-02-02T10:03:11.263Z",
+          "mediaLink": "https://storage.googleapis.com/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/Widgets%2Fbig_buck_bunny.ogv"
         }
       ]
     };
 
-  function handleStorageResponse() {
+  function handleStorageResponse(storage) {
     var companyId = storage.getAttribute("companyId"),
       folder = storage.getAttribute("folder"),
       fileName = storage.getAttribute("fileName"),
@@ -56,6 +58,7 @@
       contentType = storage.getAttribute("contentType"),
       sort = storage.getAttribute("sort"),
       sortDirection = storage.getAttribute("sortDirection"),
+      storageId = storage.getAttribute("id"),
       contentTypes = null,
       files = [],
       urls = [];
@@ -64,12 +67,13 @@
       if (folder) {
         // Single file in folder.
         if (fileName) {
-          return singleImage;
+          // Requiring "video" in the id value of <rise-storage> to differentiate between image or video
+          return (storageId && storageId.indexOf("video") !== -1) ? singleVideo : singleImage;
         }
       }
       // Single file in bucket.
       else if (fileName) {
-        return singleImage;
+        return (storageId && storageId.indexOf("video") !== -1) ? singleVideo : singleImage;
       }
 
       // File type filtering
@@ -159,9 +163,20 @@
 
   HTMLElement.prototype.go = function() {
     var evt = document.createEvent("CustomEvent"),
-      urls = handleStorageResponse();
+      storageItem, urls;
 
-    evt.initCustomEvent("rise-storage-response", false, false, urls);
-    storage.dispatchEvent(evt);
+    for (var i = 0; i < storageItems.length; ++i) {
+      storageItem = storageItems[i];
+
+      if (dispatched.indexOf(storageItem) === -1) {
+        urls = handleStorageResponse(storageItem);
+
+        evt.initCustomEvent("rise-storage-response", false, false, urls);
+        storageItem.dispatchEvent(evt);
+        dispatched.push(storageItem);
+      }
+
+    }
+
   }
 })(window);
