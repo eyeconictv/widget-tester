@@ -61,19 +61,28 @@
       storageId = storage.getAttribute("id"),
       contentTypes = null,
       files = [],
-      urls = [];
+      file = {},
+      response = {};
+
+    response.files = [];
 
     if (companyId) {
       if (folder) {
         // Single file in folder.
         if (fileName) {
-          // Requiring "video" in the id value of <rise-storage> to differentiate between image or video
-          return (storageId && storageId.indexOf("video") !== -1) ? singleVideo : singleImage;
+          // Requiring "video" in the id value of <rise-storage> to differentiate between image or video.
+          file.url = (storageId && storageId.indexOf("video") !== -1) ? singleVideo : singleImage;
+          response.files.push(file);
+
+          return response;
         }
       }
       // Single file in bucket.
       else if (fileName) {
-        return (storageId && storageId.indexOf("video") !== -1) ? singleVideo : singleImage;
+        file.url = (storageId && storageId.indexOf("video") !== -1) ? singleVideo : singleImage;
+        response.files.push(file);
+
+        return response;
       }
 
       // File type filtering
@@ -153,30 +162,32 @@
         files.reverse();
       }
 
-      files.forEach(function(file) {
-        urls.push(file.mediaLink);
+      files.forEach(function(item) {
+        file = {};
+        file.url = item.mediaLink;
+
+        response.files.push(file);
       });
 
-      return urls;
+      return response;
     }
   }
 
   HTMLElement.prototype.go = function() {
     var evt = document.createEvent("CustomEvent"),
-      storageItem, urls;
+      response = {},
+      storageItem;
 
     for (var i = 0; i < storageItems.length; ++i) {
       storageItem = storageItems[i];
 
       if (dispatched.indexOf(storageItem) === -1) {
-        urls = handleStorageResponse(storageItem);
+        response = handleStorageResponse(storageItem);
 
-        evt.initCustomEvent("rise-storage-response", false, false, urls);
+        evt.initCustomEvent("rise-storage-response", false, false, response);
         storageItem.dispatchEvent(evt);
         dispatched.push(storageItem);
       }
-
     }
-
   }
 })(window);
