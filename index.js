@@ -36,7 +36,13 @@
         options = options || {};
         return function () {
           var server = express();
-          server.use(express.static(options.rootPath || "./"));
+          var rootPath = options.rootPath || "./";
+          server.use(express.static(rootPath));
+          if(options.html5mode){
+            server.get('*', function(request, response){
+              response.sendFile('index.html', {"root": rootPath});
+            });
+          }
           var credentials = {key: key, cert: cert};
           var hServer;
           if(options.https) {
