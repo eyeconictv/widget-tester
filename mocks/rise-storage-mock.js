@@ -7,19 +7,19 @@
     images = {
       "items": [
         {
-          "name": "my-folder/moon.jpg",
+          "name": "Widgets/moon.jpg",
           "contentType": "image/jpeg",
           "updated": "2015-02-04T17:45:25.945Z",
           "selfLink": "https://www.googleapis.com/storage/v1/b/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/o/Widgets%2Fmoon.jpg"
         },
         {
-          "name": "my-folder/apple_raw.png",
+          "name": "Widgets/apple_raw.png",
           "contentType": "image/png",
           "updated": "2015-02-06T14:25:11.312Z",
           "selfLink": "https://www.googleapis.com/storage/v1/b/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/o/Widgets%2Fapple.png"
         },
         {
-          "name": "my-folder/duck.bmp",
+          "name": "Widgets/duck.bmp",
           "contentType": "image/bmp",
           "updated": "2015-02-06T11:24:13.313Z",
           "selfLink": "https://www.googleapis.com/storage/v1/b/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/o/Widgets%2Fduck.bmp"
@@ -176,7 +176,7 @@
     }
   }
 
-  HTMLElement.prototype.go = function() {
+  function getFiles() {
     var evt = document.createEvent("CustomEvent"),
       response = {},
       storageItem;
@@ -192,5 +192,17 @@
         dispatched.push(storageItem);
       }
     }
+  }
+
+  function startTimer() {
+    setTimeout(function() {
+      dispatched = [];
+      getFiles();
+    }, 5000);
+  }
+
+  HTMLElement.prototype.go = function() {
+    getFiles();
+    startTimer();
   }
 })(window);
