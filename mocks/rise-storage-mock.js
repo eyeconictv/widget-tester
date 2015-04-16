@@ -3,49 +3,49 @@
 
   var storageItems = document.querySelectorAll("rise-storage"),
     dispatched = [],
-    singleImage = "https://storage.googleapis.com/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/Widgets%2Fmoon.jpg",
+    singleImage = "https://www.googleapis.com/storage/v1/b/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/o/Widgets%2Fmoon.jpg",
     images = {
       "items": [
         {
           "name": "my-folder/moon.jpg",
           "contentType": "image/jpeg",
           "updated": "2015-02-04T17:45:25.945Z",
-          "mediaLink": "https://storage.googleapis.com/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/Widgets%2Fmoon.jpg"
+          "selfLink": "https://www.googleapis.com/storage/v1/b/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/o/Widgets%2Fmoon.jpg"
         },
         {
           "name": "my-folder/apple_raw.png",
           "contentType": "image/png",
           "updated": "2015-02-06T14:25:11.312Z",
-          "mediaLink": "https://storage.googleapis.com/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/Widgets%2Fapple.png"
+          "selfLink": "https://www.googleapis.com/storage/v1/b/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/o/Widgets%2Fapple.png"
         },
         {
           "name": "my-folder/duck.bmp",
           "contentType": "image/bmp",
           "updated": "2015-02-06T11:24:13.313Z",
-          "mediaLink": "https://storage.googleapis.com/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/Widgets%2Fduck.bmp"
+          "selfLink": "https://www.googleapis.com/storage/v1/b/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/o/Widgets%2Fduck.bmp"
         }
       ]
     },
-    singleVideo = "https://storage.googleapis.com/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/Widgets%2Fa_food_show.webm",
+    singleVideo = "https://www.googleapis.com/storage/v1/b/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/o/Widgets%2Fa_food_show.webm",
     videos = {
       "items": [
         {
           "name": "Widgets/big_buck_bunny.webm",
           "contentType": "video/webm",
           "updated": "2015-02-02T10:03:11.263Z",
-          "mediaLink": "https://storage.googleapis.com/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/Widgets%2Fbig_buck_bunny.webm"
+          "selfLink": "https://www.googleapis.com/storage/v1/b/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/o/Widgets%2Fbig_buck_bunny.webm"
         },
         {
           "name": "Widgets/big_buck_bunny.mp4",
           "contentType": "video/mp4",
           "updated": "2015-02-02T10:03:11.263Z",
-          "mediaLink": "https://storage.googleapis.com/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/Widgets%2Fbig_buck_bunny.mp4"
+          "selfLink": "https://www.googleapis.com/storage/v1/b/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/o/Widgets%2Fbig_buck_bunny.mp4"
         },
         {
           "name": "Widgets/big_buck_bunny.ogv",
           "contentType": "video/ogg",
           "updated": "2015-02-02T10:03:11.263Z",
-          "mediaLink": "https://storage.googleapis.com/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/Widgets%2Fbig_buck_bunny.ogv"
+          "selfLink": "https://www.googleapis.com/storage/v1/b/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/o/Widgets%2Fbig_buck_bunny.ogv"
         }
       ]
     };
@@ -59,6 +59,7 @@
       sort = storage.getAttribute("sort"),
       sortDirection = storage.getAttribute("sortDirection"),
       storageId = storage.getAttribute("id"),
+      suffix = "?alt=media",
       contentTypes = null,
       files = [],
       file = {},
@@ -71,7 +72,8 @@
         // Single file in folder.
         if (fileName) {
           // Requiring "video" in the id value of <rise-storage> to differentiate between image or video.
-          file.url = (storageId && storageId.indexOf("video") !== -1) ? singleVideo : singleImage;
+          file.url = (storageId && storageId.indexOf("video") !== -1) ? (singleVideo + suffix) :
+            (singleImage + suffix);
           response.files.push(file);
 
           return response;
@@ -79,7 +81,8 @@
       }
       // Single file in bucket.
       else if (fileName) {
-        file.url = (storageId && storageId.indexOf("video") !== -1) ? singleVideo : singleImage;
+        file.url = (storageId && storageId.indexOf("video") !== -1) ? (singleVideo + suffix) :
+          (singleImage + suffix);
         response.files.push(file);
 
         return response;
@@ -164,7 +167,7 @@
 
       files.forEach(function(item) {
         file = {};
-        file.url = item.mediaLink;
+        file.url = item.selfLink + suffix;
 
         response.files.push(file);
       });
