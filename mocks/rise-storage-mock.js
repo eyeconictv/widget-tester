@@ -59,7 +59,7 @@
       sort = storage.getAttribute("sort"),
       sortDirection = storage.getAttribute("sortDirection"),
       storageId = storage.getAttribute("id"),
-      suffix = "?alt=media&cb=" + new Date().getTime(),
+      suffix = "?alt=media",
       contentTypes = null,
       files = [],
       file = {},
