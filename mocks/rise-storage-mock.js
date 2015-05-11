@@ -48,7 +48,8 @@
           "selfLink": "https://www.googleapis.com/storage/v1/b/risemedialibrary-b428b4e8-c8b9-41d5-8a10-b4193c789443/o/Widgets%2Fbig_buck_bunny.ogv"
         }
       ]
-    };
+    },
+    isRefreshing = false;
 
   function handleStorageResponse(storage) {
     var companyId = storage.getAttribute("companyId"),
@@ -74,6 +75,11 @@
           // Requiring "video" in the id value of <rise-storage> to differentiate between image or video.
           file.url = (storageId && storageId.indexOf("video") !== -1) ? (singleVideo + suffix) :
             (singleImage + suffix);
+
+          if (isRefreshing) {
+            file.url += "&cb=0";
+          }
+
           response.files.push(file);
 
           return response;
@@ -83,6 +89,11 @@
       else if (fileName) {
         file.url = (storageId && storageId.indexOf("video") !== -1) ? (singleVideo + suffix) :
           (singleImage + suffix);
+
+        if (isRefreshing) {
+          file.url += "&cb=0";
+        }
+
         response.files.push(file);
 
         return response;
@@ -197,8 +208,9 @@
   function startTimer() {
     setTimeout(function() {
       dispatched = [];
+      isRefreshing = true;
       getFiles();
-    }, 5000);
+    }, 2000);
   }
 
   HTMLElement.prototype.go = function() {
