@@ -163,7 +163,7 @@
         var runAngularTest = function (cb) {
 
           var args = ["--baseUrl", options.baseUrl || "http://" +
-            require("./getIpAddress")() + ":" + e2ePort + "/src/settings-e2e.html"];
+            require("./getIpAddress")() + ":" + e2ePort + "/src/settings-e2e.html", "--params.login.user", options.loginUser, "--params.login.pass", options.loginPass];
           var argv = require("yargs").argv;
           if(!options.specs && argv.specs) {
             options.specs = argv.specs;
