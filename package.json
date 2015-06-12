@@ -50,7 +50,7 @@
     "properties": "^1.2.1",
     "reporter-file": "0.0.1",
     "run-sequence": "^0.3.6",
-    "sinon": "1.14.1",
+    "sinon": "^1.11.1",
     "sinon-chai": "^2.6.0",
     "spawn-cmd": "0.0.2",
     "xml2js": "^0.4.4",
