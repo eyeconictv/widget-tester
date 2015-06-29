@@ -2,6 +2,7 @@ var seleniumAddress = (process.env.NODE_ENV === 'prod') ? 'http://localhost:4444
 if(process.env.SELENIUM_ADDRESS) {
   seleniumAddress = process.env.SELENIUM_ADDRESS;
 }
+process.env.LOG_XUNIT = true;
 process.env.XUNIT_FILE = 'reports/angular-xunit.xml';
 process.env.CHROME_INSTANCES = process.env.CHROME_INSTANCES || 1;
 // process.env.MOCHA_REPORTER_FILE = 'reports/anglar.json';
@@ -32,7 +33,8 @@ exports.config = {
   framework: 'mocha',
 
   mochaOpts: {
-    reporter: require("xunit-file"),
+    // reporter: 'require("xunit-file")',
+    reporter: 'spec',
     enableTimeouts: false,
     slow: 3000
   }
