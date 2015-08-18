@@ -93,9 +93,12 @@
           //TODO
           return false;
         },
-        getInt: function (key) {
-          if (key === "rsH") {
-            return 1550;
+        getInt: function (value) {
+          switch (value) {
+            case "rsW":
+              return window.innerWidth;
+            case "rsH":
+              return window.innerHeight;
           }
 
           return -1;
