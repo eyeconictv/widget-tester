@@ -93,8 +93,11 @@
           //TODO
           return false;
         },
-        getInt: function () {
-          //TODO
+        getInt: function (key) {
+          if (key === "rsH") {
+            return 1550;
+          }
+
           return -1;
         }
       };
