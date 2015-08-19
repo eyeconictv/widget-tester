@@ -93,8 +93,14 @@
           //TODO
           return false;
         },
-        getInt: function () {
-          //TODO
+        getInt: function (value) {
+          switch (value) {
+            case "rsW":
+              return window.innerWidth;
+            case "rsH":
+              return window.innerHeight;
+          }
+
           return -1;
         }
       };
