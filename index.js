@@ -176,10 +176,10 @@
             }))
             .on("error", function (e) {
               gutil.log(e);
-              if(fs.statSync("./reports/angular-xunit.xml")) {
+              /*if(fs.statSync("./reports/angular-xunit.xml")) {
                 //output test result to console
                 gutil.log("Test report", fs.readFileSync("./reports/angular-xunit.xml", {encoding: "utf8"}));
-              }
+              }*/
               if(options.throw || options.throw ===undefined) {
                 throw e;
               }
