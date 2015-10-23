@@ -19,6 +19,7 @@
   var xml2js = require("xml2js");
   var async = require("async");
   var karma = require("gulp-karma");
+  var coveralls = require('gulp-coveralls');
   var _ = require("lodash");
   var https = require("https");
   var http = require("http");
@@ -28,6 +29,11 @@
   var httpServer;
 
   var factory = {
+    getCoverageReportDir: function() {
+      return process.env.CIRCLE_ARTIFACTS ? 
+        path.join(process.env.CIRCLE_ARTIFACTS, "./coverage") : 
+        path.join(__dirname, "../../reports/coverage");
+    }, 
     gulpTaskFactory: {
       webdriveUpdate: function () {
         return webdriver_update;
@@ -142,12 +148,25 @@
             cb("Test files is missing.");
           }
           else {
+            var karmaOptions = {
+              configFile: options.configFile || path.join(__dirname, "karma.conf.js"),
+              action: options.watch ? "watch" : "run",
+              basePath : options.configFile || "./",
+            };
+            if (options.coverageFiles) {
+              karmaOptions.preprocessors = {}
+              karmaOptions.preprocessors[options.coverageFiles] = "coverage";
+              karmaOptions.coverageReporter = {
+                dir : factory.getCoverageReportDir(),
+                reporters: [
+                  { type: 'lcov'},
+                  { type: 'text' },
+                  { type: 'text-summary' },
+                ]
+              };
+            }
             return gulp.src(options.testFiles).pipe(
-              karma({
-                  configFile: options.configFile || path.join(__dirname, "karma.conf.js"),
-                  action: options.watch ? "watch" : "run",
-                  basePath : options.configFile || "./",
-                })
+              karma(karmaOptions)
               ).on("error", function(err) {
                 // Make sure failed tests cause gulp to exit non-zero
                 gutil.log("Error: ", err);
@@ -199,6 +218,12 @@
             id + ":ensureReportDirectory",
             id + ":runAngularTest", cb
           );
+        };
+      },
+      coveralls: function() {
+        return function () {
+          return gulp.src(factory.getCoverageReportDir()+'/**/lcov.info')
+            .pipe(coveralls());
         };
       },
       metrics: function (options) {
