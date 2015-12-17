@@ -34,16 +34,10 @@
 
     // event is required.
     if (params.event) {
-      json = {};
-      json.event = params.event;
+      json = params;
 
-      if (params.event_details) {
-        json.event_details = params.event_details;
-      }
-
-      if (params.file_url) {
-        json.file_url = params.file_url;
-        json.file_format = RiseVision.Common.LoggerUtils.getFileFormat(params.file_url);
+      if (json.file_url) {
+        json.file_format = RiseVision.Common.LoggerUtils.getFileFormat(json.file_url);
       }
 
       RiseVision.Common.LoggerUtils.getIds(function(companyId, displayId) {
