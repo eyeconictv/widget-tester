@@ -3,31 +3,9 @@
 
   var displayId = "",
     companyId = "",
-    getIdsCallback,
     throttle = false,
     throttleDelay = 1000,
     lastEvent = "";
-
-  function setIds(names, values) {
-    if (Array.isArray(names) && names.length > 0) {
-      if (Array.isArray(values) && values.length > 0) {
-        if (names[0] === "companyId") {
-          companyId = values[0];
-        }
-
-        if (names[1] === "displayId") {
-          if (values[1]) {
-            displayId = values[1];
-          }
-          else {
-            displayId = "preview";
-          }
-        }
-
-        getIdsCallback(companyId, displayId);
-      }
-    }
-  }
 
   function getEventParams(params, cb) {
     var json = null;
@@ -40,12 +18,10 @@
         json.file_format = RiseVision.Common.LoggerUtils.getFileFormat(json.file_url);
       }
 
-      RiseVision.Common.LoggerUtils.getIds(function(companyId, displayId) {
-        json.company_id = companyId;
-        json.display_id = displayId;
+      json.company_id = companyId;
+      json.display_id = displayId;
 
-        cb(json);
-      });
+      cb(json);
     }
     else {
       cb(json);
@@ -70,26 +46,6 @@
   }
 
   window.RiseVision.Common.LoggerUtils = {
-    getIds: function (cb) {
-      var id = new window.gadgets.Prefs().getString("id");
-
-      if (!cb || typeof cb !== "function") {
-        return;
-      }
-      else {
-        getIdsCallback = cb;
-      }
-
-      if (companyId && displayId) {
-        getIdsCallback(companyId, displayId);
-      }
-      else {
-        if (id && id !== "") {
-          window.gadgets.rpc.register("rsparam_set_" + id, setIds);
-          window.gadgets.rpc.call("", "rsparam_get", null, id, ["companyId", "displayId"]);
-        }
-      }
-    },
     getInsertData: function (params) {},
     getFileFormat: function (url) {
       var hasParams = /[?#&]/,
@@ -112,13 +68,16 @@
 
       return str.toLowerCase();
     },
-    getTable: function (name) {},
     logEvent: function (table, params) {
       getEventParams(params, function(json) {
         if (json !== null) {
           RiseVision.Common.Logger.log(table, json);
         }
       });
+    },
+    setIds: function(company, display) {
+      companyId = company;
+      displayId = display;
     }
   };
 
