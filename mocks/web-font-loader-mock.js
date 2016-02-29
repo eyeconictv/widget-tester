@@ -23,7 +23,7 @@
 angular.module("risevision.widget.common")
   .factory("googleFontLoader", ["$q", function ($q) {
     var factory = {
-      getPopularFonts: function() {
+      getGoogleFonts: function() {
         var deferred = $q.defer();
           resp = {};
 
