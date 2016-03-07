@@ -47,14 +47,21 @@
     '<author>Mr. X4</author>' +
     '</item>' +
     '</channel>' +
-    '</rss>';
+    '</rss>',
+    parseXml;
 
 
   gadgets.io = gadgets.io || {};
 
+  if (window.DOMParser) {
+    parseXml = function(xmlStr) {
+      return (new window.DOMParser()).parseFromString(xmlStr, "text/xml");
+    };
+  }
+
   gadgets.io.makeRequest = function (url, callback) {
     var response = {
-      data: xmlRSS,
+      data: parseXml(xmlRSS),
       errors: [],
       rc: 200,
       text: xmlRSS
