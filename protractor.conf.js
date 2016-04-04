@@ -29,7 +29,15 @@ exports.config = {
     version: '',
     platform: 'ANY',
     shardTestFiles: true,
-    maxInstances: process.env.CHROME_INSTANCES
+    maxInstances: process.env.CHROME_INSTANCES,
+    download: {
+      prompt_for_download: false
+    },
+    chromeOptions: {
+      prefs: {
+        'download.default_directory':'./tmp'
+      }
+    }
   },
 
   framework: 'mocha',
