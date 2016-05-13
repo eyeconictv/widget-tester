@@ -3,6 +3,7 @@
 
   var displayId = "",
     companyId = "",
+    version = null,
     throttle = false,
     throttleDelay = 1000,
     lastEvent = "";
@@ -20,6 +21,10 @@
 
       json.company_id = companyId;
       json.display_id = displayId;
+
+      if (version) {
+        json.version = version;
+      }
 
       cb(json);
     }
@@ -78,6 +83,9 @@
     setIds: function(company, display) {
       companyId = company;
       displayId = display;
+    },
+    setVersion: function(value) {
+      version = value;
     }
   };
 
