@@ -1,6 +1,6 @@
 {
   "name": "widget-tester",
-  "version": "1.6.6",
+  "version": "1.6.7",
   "description": "Configuration, task & mocks related to widget testing.",
   "main": "index.js",
   "scripts": {
@@ -44,6 +44,7 @@
     "karma-mocha": "^0.2.0",
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-sinon-chai": "^0.2.0",
+    "karma-webpack": "^1.7.0",
     "lodash": "^2.4.1",
     "mocha": "^2.3.3",
     "node-uuid": "^1.4.1",
