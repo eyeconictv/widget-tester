@@ -18,7 +18,8 @@
   var fs = require("fs");
   var xml2js = require("xml2js");
   var async = require("async");
-  var karma = require("gulp-karma");
+  var gulpKarma = require("gulp-karma");
+  var karma = require('karma');
   var coveralls = require('gulp-coveralls');
   var _ = require("lodash");
   var https = require("https");
@@ -166,7 +167,7 @@
               };
             }
             return gulp.src(options.testFiles).pipe(
-              karma(karmaOptions)
+              gulpKarma(karmaOptions)
               ).on("error", function(err) {
                 // Make sure failed tests cause gulp to exit non-zero
                 gutil.log("Error: ", err);
@@ -175,6 +176,22 @@
               });
           }
         };
+      },
+      testUnitReact: function (options) {
+        return function (cb) {
+          karma.server.start({
+            configFile: options.configFile || path.join(__dirname, "karma.conf.js"),
+            singleRun: options.singleRun || true
+          }, function(exitCode) {
+            if (exitCode === 0) {
+              cb();
+            } else {
+              var msg = "Tests failed with exit code:" + exitCode;
+              console.error(msg);
+              cb(msg);
+            }
+          });
+        }
       },
       testE2EAngular: function (options) {
         options = options || {};
