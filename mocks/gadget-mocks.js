@@ -1,7 +1,9 @@
 
 ;(function(window) {
 
-  var rpc = function (methodName, callback, param1, param2) {
+  var rpc = function (methodName, callback, param1, param2, isPreview) {
+    isPreview = isPreview || false;
+
     if(methodName === "rscmd_saveSettings") {
       window.result.params = param1.params;
       window.result.additionalParams = param1.additionalParams;
@@ -36,6 +38,9 @@
           for (i = 0; i < param2.length; i++) {
             if (param2[i] === "additionalParams" && window.gadget && window.gadget.settings) {
               value[i] = JSON.stringify(window.gadget.settings.additionalParams);
+            }
+            else if (isPreview && param2[i] === "displayId") {
+              value[i] = "preview";
             }
             else {
               value[i] = JSON.stringify(param2[i]);
