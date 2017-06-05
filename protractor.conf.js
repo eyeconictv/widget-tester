@@ -11,6 +11,7 @@ process.env.CHROME_INSTANCES = process.env.CHROME_INSTANCES || 1;
 // process.env.MOCHA_REPORTER = 'JSON';
 
 exports.config = {
+  directConnect: true,
   allScriptsTimeout: 11000,
 
   // specs: [
