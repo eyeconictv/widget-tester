@@ -12,7 +12,7 @@ process.env.CHROME_INSTANCES = process.env.CHROME_INSTANCES || 1;
 
 exports.config = {
   directConnect: true,
-  allScriptsTimeout: 11000,
+  allScriptsTimeout: 30000,
 
   // specs: [
   //   './test/e2e/angular/*.js'
