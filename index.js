@@ -200,7 +200,8 @@
 
           var args = ["--baseUrl", options.baseUrl || "http://" + require("./getIpAddress")() + ":" + e2ePort + "/src/settings-e2e.html",
             "--params.login.user", options.loginUser, "--params.login.pass", options.loginPass,
-            "--params.login.user2", options.loginUser2, "--params.login.pass2", options.loginPass2];
+            "--params.login.user2", options.loginUser2, "--params.login.pass2", options.loginPass2,
+            "--params.twitter.user", options.twitterUser, "--params.twitter.pass", options.twitterPass];
           var argv = require("yargs").argv;
           if(!options.specs && argv.specs) {
             options.specs = argv.specs;
