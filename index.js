@@ -42,8 +42,11 @@
         } : {};
 
         return function () {
-          webdriver_update(options, callback || function () {
+          webdriver_update(options, function () {
             console.log("Finished WebDriver update");
+            if (callback) {
+              callback();
+            }
           });
         };
       },
