@@ -36,8 +36,16 @@
         path.join(__dirname, "../../reports/coverage");
     }, 
     gulpTaskFactory: {
-      webdriveUpdate: function () {
-        return webdriver_update;
+      webdriveUpdate: function (webDriverVersion) {
+        var options = webDriverVersion ? {
+          browsers: ["versions.chrome=" + webDriverVersion]
+        } : {};
+
+        return function () {
+          webdriver_update(options, function () {
+            console.log("Finished WebDriver update");
+          });
+        };
       },
       testServer: function (options) {
         options = options || {};
