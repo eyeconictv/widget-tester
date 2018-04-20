@@ -35,6 +35,7 @@ exports.config = {
       prompt_for_download: false
     },
     chromeOptions: {
+      args: [ "--headless" ],
       prefs: {
         'download.default_directory':'./tmp'
       }
