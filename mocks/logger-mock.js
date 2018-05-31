@@ -16,7 +16,7 @@
       json = params;
 
       if (json.file_url) {
-        json.file_format = RiseVision.Common.LoggerUtils.getFileFormat(json.file_url);
+        json.file_format = params.file_format || RiseVision.Common.LoggerUtils.getFileFormat(json.file_url);
       }
 
       json.company_id = companyId;
