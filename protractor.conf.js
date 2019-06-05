@@ -36,7 +36,7 @@ exports.config = {
     },
     chromeOptions: {
       prefs: {
-        'download.default_directory':'./tmp'
+        'download.default_directory': process.cwd() + '/tmp'
       }
     }
   },
