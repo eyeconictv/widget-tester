@@ -242,7 +242,13 @@
       coveralls: function() {
         return function () {
           return gulp.src(factory.getCoverageReportDir()+'/**/lcov.info')
-            .pipe(coveralls());
+            .pipe(coveralls())
+            .on('error', function(error) {
+              // we have an error
+              console.error(error);
+
+              this.emit('end');
+            });
         };
       },
       metrics: function (options) {
