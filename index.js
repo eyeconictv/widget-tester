@@ -200,7 +200,7 @@
 
           var args = ["--baseUrl", options.baseUrl || "http://" + require("./getIpAddress")() + ":" + e2ePort + "/src/settings-e2e.html",
             "--params.login.user", options.loginUser, "--params.login.pass", options.loginPass,
-            "--params.login.user1", options.loginUser1, "--params.login.pass2", options.loginPass1,
+            "--params.login.user1", options.loginUser1, "--params.login.pass1", options.loginPass1,
             "--params.login.user2", options.loginUser2, "--params.login.pass2", options.loginPass2,
             "--params.twitter.user", options.twitterUser, "--params.twitter.pass", options.twitterPass,
             "--params.login.stageEnv", options.stageEnv];
