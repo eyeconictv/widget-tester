@@ -1,4 +1,4 @@
-function mockTranlate() {
+var mockTranslate = mockTranlate = function () {
   return function ($provide, $translateProvider) {
     $provide.factory("customLoader", function ($q) {
       return function () {
