@@ -35,7 +35,7 @@ exports.config = {
       prompt_for_download: false
     },
     chromeOptions: {
-      args: ['--disable-web-security'],
+      // args: ['--disable-web-security'],
       prefs: {
         'download.default_directory': process.cwd() + '/tmp'
       }
