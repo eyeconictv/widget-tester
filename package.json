@@ -1,6 +1,6 @@
 {
   "name": "widget-tester",
-  "version": "1.11.3",
+  "version": "1.11.4",
   "description": "Configuration, task & mocks related to widget testing.",
   "main": "index.js",
   "scripts": {

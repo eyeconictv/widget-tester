@@ -11,6 +11,7 @@
   var spawn = require("spawn-cmd").spawn;
   var gutil = require("gulp-util");
   var webdriver_update = require("gulp-protractor").webdriver_update;
+  var webdriver_update_specific = require("gulp-protractor").webdriver_update_specific;
   var protractor = require("gulp-protractor").protractor;
   var path = require("path");
   var runSequence = require("run-sequence");
@@ -39,6 +40,7 @@
       webdriveUpdate: function () {
         return webdriver_update;
       },
+      webdriverUpdateSpecific: webdriver_update_specific,
       testServer: function (options) {
         options = options || {};
         return function () {
