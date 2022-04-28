@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Rise-Vision/widget-tester.git"
+    "url": "https://github.com/porcupine-plan/widget-tester.git"
   },
   "keywords": [
     "widget",
@@ -17,9 +17,9 @@
   "author": "Xiyang Chen <settinghead@gmail.com>",
   "license": "GPLv3",
   "bugs": {
-    "url": "https://github.com/Rise-Vision/widget-tester/issues"
+    "url": "https://github.com/porcupine-plan/widget-tester/issues"
   },
-  "homepage": "https://github.com/Rise-Vision/widget-tester",
+  "homepage": "https://github.com/porcupine-plan/widget-tester",
   "dependencies": {
     "async": "^0.9.0",
     "casperjs": "^1.1.0-beta3",
